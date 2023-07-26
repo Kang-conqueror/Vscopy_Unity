@@ -79,8 +79,6 @@ public class Tilemap_reposition : MonoBehaviour
                 
                 break;
 
-
-
             case "Enemy":
 
                 if (Collide.enabled) {
@@ -88,18 +86,13 @@ public class Tilemap_reposition : MonoBehaviour
                     transform.Translate(Vector3.up * Y_direction * Tile_length);
                 }
 
-
-
-
-
                 break;
         }
-
     }
 
 
 
-
+     
 
 
 }

@@ -48,6 +48,17 @@ public class Enemy_control : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// This function is called when the object becomes enabled and active.
+    /// </summary>
+    void OnEnable()
+    {   
+        //Prefab은 활성화되지 않은 상태이기에, Scene의 Unit에 접근할 수 없다.
+        //OnEnable로 Unit이 Enable되었을 때, GamaManager에 접근해 Player의 정보 가져오기
+        Target_rb2 = GameManager.instance.Player.GetComponent<Rigidbody2D>();
+    }
+
+
 
 
 }
