@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 7920674897502000937}
   - component: {fileID: 4988535138952498078}
   m_Layer: 0
-  m_Name: Enemy B
+  m_Name: Enemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -35,7 +35,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &8873322735811612837
 SpriteRenderer:
@@ -184,7 +184,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9575045994b95e542ba70c767e9c8b55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Enemy_speed: 3
+  Enemy_speed: 0
+  Current_hp: 0
+  Max_hp: 0
+  Run_ani_con:
+  - {fileID: 22100000, guid: 050556270436d4f4288557291a1a99c0, type: 2}
+  - {fileID: 22100000, guid: 12cfc8b2360c2fc4499d4f6f6607671a, type: 2}
   Target_rb2: {fileID: 0}
 --- !u!114 &4988535138952498078
 MonoBehaviour:

@@ -7,10 +7,17 @@ public class Spawner_control : MonoBehaviour
     //Spawn 지점을 저장할 변수
     public Transform[] Spawn_point;
 
+    //Spawn 되는 Unit의 data를 담을 list
+    public Spawn_data[] Spawn_data;
+
+
+
     //Spawn 시간을 설정할 변수
     float Timer;
 
-
+    //시간의 흐름에 따라 증가할 level 
+    int level;
+    float level_up = 10f;
 
 
     private void Awake() {
@@ -29,7 +36,11 @@ public class Spawner_control : MonoBehaviour
         //게속해서 시간을 더해주기, 시간이 지나면 지날수록 소환주기 빨라지게 하게끔
         Timer += Time.deltaTime;
 
-        if (Timer > 0.2f) {
+        //시간의 흐름에 따라, level이 올라가게 하기
+        level = Mathf.FloorToInt(GameManager.instance.Game_time / level_up);
+        
+
+        if (Timer > Spawn_data[level].Spawn_time) {
             Spwan();
             Timer = 0f;
         }
@@ -44,14 +55,38 @@ public class Spawner_control : MonoBehaviour
 
         //PoolManager의 Get함수에서, Instantiate 한 값을 return 받는다.
         //그 Instantiate한 Unit을 Enemy에 저장한다. 
-        GameObject Enemy =  GameManager.instance.Pool.Get(Random.Range(0, 2));
+        GameObject Enemy =  GameManager.instance.Pool.Get(0);
 
         //변수에 저장한 Instantiate 된 Unit의 좌표를 랜덤하게 변경해준다.
         Enemy.transform.position = Spawn_point[Random.Range(1, Spawn_point.Length)].position;
 
+
+        Enemy.GetComponent<Enemy_control>().Get_data(Spawn_data[level]);
+
     }
+
+
+}
+
+//class를 Inspector에서 볼 수 있게 Serialize
+[System.Serializable]
+//Spawn의 data를 관리할 Class
+public class Spawn_data{
+
+    public int Sprite_type;
+
+    public float Spawn_time;
+
+    public int Hp;
+
+    public float E_speed;
+
 
 
 
 
 }
+
+
+
+

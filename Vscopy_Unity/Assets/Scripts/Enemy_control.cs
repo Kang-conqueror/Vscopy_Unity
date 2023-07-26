@@ -4,14 +4,28 @@ using UnityEngine;
 
 public class Enemy_control : MonoBehaviour
 {
-
+    //이동속도를 담을 변수
     public float Enemy_speed;
+
+    //현재 체력, 최대 체력을 담을 변수
+    public float Current_hp;
+
+    public float Max_hp;
+
+    //Animator을 받을 변수
+    public RuntimeAnimatorController[] Run_ani_con; 
+
+    //Player의 Rigidbody 2d를 받을 변수
     public Rigidbody2D Target_rb2;
 
-    bool Live_dead = true;
+    //Unit의 생존, 사망을 확인할 Bool 변수
+    bool Live_dead;
 
+    //Rigidbody 2d, Spriterenderer을 받을 변수
     Rigidbody2D Rb2;
     SpriteRenderer Sprite;
+
+    Animator Anim;
 
 
     private void Awake() {
@@ -19,8 +33,7 @@ public class Enemy_control : MonoBehaviour
         //Rigidbody 2d, Spriterenderer 가져오기
         Rb2 = GetComponent<Rigidbody2D>();
         Sprite = GetComponent<SpriteRenderer>();
-
-
+        Anim = GetComponent<Animator>();
         
     }
 
@@ -56,9 +69,28 @@ public class Enemy_control : MonoBehaviour
         //Prefab은 활성화되지 않은 상태이기에, Scene의 Unit에 접근할 수 없다.
         //OnEnable로 Unit이 Enable되었을 때, GamaManager에 접근해 Player의 정보 가져오기
         Target_rb2 = GameManager.instance.Player.GetComponent<Rigidbody2D>();
+
+        //Object Pooling으로 Unit을 계속 재활용하며 사용할 것이기에, OnEnable시
+        //Live를 true로 해준다.
+        Live_dead = true;
+
+        //위와 같은 이유로, 사망 후 Disable 되었으면 체력이 0 이하일 것이기에
+        //체력을 최대체력으로 설정해준다
+        Current_hp = Max_hp;
+
     }
 
+    //Enemy의 data를 가져오는 함수를 생성, Spawn_data class를 통째로 가져오기
+    public void Get_data(Spawn_data data) {
+
+        Anim.runtimeAnimatorController = Run_ani_con[data.Sprite_type];
+
+        Enemy_speed = data.E_speed;
+
+        Current_hp = data.Hp;
+        Max_hp = data.Hp;
 
 
+    }
 
 }

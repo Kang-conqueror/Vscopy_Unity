@@ -14,6 +14,10 @@ public class GameManager : MonoBehaviour
     public Player_control Player;
 
 
+    public float Game_time;
+    public float Max_game_time = 20f;
+
+
     private void Awake() {
         
         instance = this;
@@ -30,6 +34,13 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        Game_time += Time.deltaTime;
+
+        if (Game_time > Max_game_time) {
+
+        }
+
         
     }
 }
