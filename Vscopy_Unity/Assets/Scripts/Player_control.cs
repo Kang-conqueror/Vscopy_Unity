@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class Player_control : MonoBehaviour
 {
+
+    
+
+
+
     //키보드 입력의 벡터를 받을 변수
     public Vector2 Input_vec;
 
