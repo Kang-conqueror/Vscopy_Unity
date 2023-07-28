@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Player_control : MonoBehaviour
 {
-
-    
+    //Scanner_control Script를 받을 변수
+    public Scanner_control Scanner_Control;
 
 
 
@@ -23,12 +23,14 @@ public class Player_control : MonoBehaviour
     public float Player_speed;
 
 
+
+
     private void Awake() {
         
         Rb2 = GetComponent<Rigidbody2D>();
         Sprite = GetComponent<SpriteRenderer>();
         Ani = GetComponent<Animator>();
-
+        Scanner_Control = GetComponent<Scanner_control>();
 
     }
 

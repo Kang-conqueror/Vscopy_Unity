@@ -39,6 +39,12 @@ public class Spawner_control : MonoBehaviour
         //시간의 흐름에 따라, level이 올라가게 하기
         level = Mathf.FloorToInt(GameManager.instance.Game_time / level_up);
         
+        //IndexOutofRange를 방지하기 위해 idx 관리하기
+        if (level >= Spawn_data.Length) {
+
+            //level이 저장한 Spawn_data(Enemy의 종류가 들어있음) 길이보다 커지면, 강제로 idx맞추기
+            level = Spawn_data.Length - 1;
+        }
 
         if (Timer > Spawn_data[level].Spawn_time) {
             Spwan();
