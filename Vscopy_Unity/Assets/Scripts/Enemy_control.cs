@@ -93,4 +93,46 @@ public class Enemy_control : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Sent when another object enters a trigger collider attached to this
+    /// object (2D physics only).
+    /// </summary>
+    /// <param name="other">The other Collider2D involved in this collision.</param>
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        //Enter한 물체의 Tag가 Bullet이 아니면 return
+        if (!other.CompareTag("Bullet")) {
+            return;
+        }   
+
+        //Currnet_hp 에서, 충돌한 Bullet의 dmg만큼 빼주기
+        Current_hp -= other.GetComponent<Bullet_control>().Bullet_dmg;
+
+
+        //피격 후 생존 시
+        if (Current_hp > 0) {
+
+        }
+
+
+        //체력이 0 이하가 되 사망시
+        else if (Current_hp <= 0) {
+
+            Dead();
+
+        }
+
+
+    }
+
+    //사망시 처리 함수
+    void Dead() {
+        
+        //Object pulling으로 관리하기에, Destroy 대신 SetActive false, 비활성화시키기
+        gameObject.SetActive(false);
+
+    }
+
+
+
 }

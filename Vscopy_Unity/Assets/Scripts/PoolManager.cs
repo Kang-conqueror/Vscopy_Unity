@@ -41,6 +41,7 @@ public class PoolManager : MonoBehaviour
             }
         }
 
+
         //Select의 값이 없을 경우
         if (!Select) {
 
