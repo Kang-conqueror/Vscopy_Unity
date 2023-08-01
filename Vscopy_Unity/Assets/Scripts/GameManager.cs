@@ -8,12 +8,20 @@ public class GameManager : MonoBehaviour
     //메모리에 적재한다고 표현한다?
     public static GameManager instance;
 
+    [Header("Single tone")]
     //GameManager에 다른 주요한 Unit?을 넣어서 GameManager에 접근하는 것으로
     //다른 것들에게도 접근 가능하게 함
     public PoolManager Pool;
     public Player_control Player;
 
+    [Header("Player info")]
+    //레벨, 킬 수, 현재 경험치, 각 레벨의 필요 경험치 변수
+    public int Level = 0;
+    public int Kills = 0;
+    public int Exp = 0;
+    public int[] Next_exp = {10, 30, 60, 100, 140, 200, 260};
 
+    [Header("Game time")]
     public float Game_time;
     public float Max_game_time = 20f;
 
@@ -41,6 +49,28 @@ public class GameManager : MonoBehaviour
 
         }
 
-        
     }
+
+    //경험치 획득을 관리하는 함수
+    public void Get_exp() {
+
+
+        Exp += 1;
+
+        if(Exp == Next_exp[Level] && Level <= Next_exp.Length) {
+            Level += 1;
+            Exp = 0;
+
+
+
+        }
+
+
+    }
+
+
+
+
+
+
 }
