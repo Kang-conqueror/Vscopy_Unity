@@ -11,6 +11,11 @@ public class PoolManager : MonoBehaviour
     //Pool 을 담을 List변수
     List<GameObject>[] Pools;
 
+
+
+// pool = [[Red], [Blue]]
+
+
     //Pools list 초기화
     private void Awake() {
 
@@ -57,7 +62,7 @@ public class PoolManager : MonoBehaviour
 
     }
 
-
+// pool = [[Red *], [Blue]]
 
 
 }

@@ -15,11 +15,13 @@ public class GameManager : MonoBehaviour
     public Player_control Player;
 
     [Header("Player info")]
-    //레벨, 킬 수, 현재 경험치, 각 레벨의 필요 경험치 변수
+    //레벨, 킬 수, 현재 경험치, 각 레벨의 필요 경험치, 체력 변수
     public int Level = 0;
     public int Kills = 0;
     public int Exp = 0;
     public int[] Next_exp = {10, 30, 60, 100, 140, 200, 260};
+    public int P_Current_hp;
+    public int P_Max_hp;
 
     [Header("Game time")]
     public float Game_time;
@@ -32,11 +34,13 @@ public class GameManager : MonoBehaviour
 
     }
 
+    
+
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        P_Current_hp = P_Max_hp;
     }
 
     // Update is called once per frame
