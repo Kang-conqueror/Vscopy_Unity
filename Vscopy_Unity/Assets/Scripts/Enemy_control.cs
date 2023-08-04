@@ -178,7 +178,7 @@ public class Enemy_control : MonoBehaviour
     //피격 시 넉백을 구현한 Coroutine
     IEnumerator Knock_back() {
 
-        print("Knock");
+        //print("Knock");
         yield return  Wait; // 다음 1프레임까지 딜레이
 
         //피격 시, 플레이어의 반대 방향으로 AddForce해서 넉백 구현

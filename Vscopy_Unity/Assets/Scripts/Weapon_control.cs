@@ -16,7 +16,7 @@ public class Weapon_control : MonoBehaviour
     public float Weapon_speed;
 
     //근접 무기의 경우, Player와 떨어진 거리를 저장할 변수
-    public float Weapon_distance = 0.15f;
+    public float Weapon_distance = 1.5f;
 
 
     //원거리 무기 발사 간격을 위해 시간을 저장할 변수
@@ -28,25 +28,25 @@ public class Weapon_control : MonoBehaviour
 
     private void Awake() {
 
-        //자신의 한단계 높은 Parent에서 Player_control 가져오기
-        Player_control = GetComponentInParent<Player_control>();
+        //게임 시작 시, GamaManager을 통해 Player 정보 가져오기
+        Player_control = GameManager.instance.Player;
     }
 
 
-    private void Start() {
+    // private void Start() {
 
         
-        transform.position = new Vector3 (0, 0, 0);
-        Init();
+    //     transform.position = new Vector3 (0, 0, 0);
+         
 
-    }
+    // }
 
 
 
     // Update is called once per frame
     void Update()
     {
-        
+        //Id에 따라 근접, 원거리 무기 구분해서 로직 적용
         switch (Id) {
 
             //근접무기일 경우, 회전시켜주자
@@ -81,15 +81,20 @@ public class Weapon_control : MonoBehaviour
     }
 
 
+
     //Level up에 따른 Weapon을 강화시켜주는 함수
     public void Lvl_up(float Weapon_dmg, int count) {
 
 
         this.Weapon_dmg = Weapon_dmg;
-        this.Count = count;
+        this.Count += count;
+
+        print(Id);
+        print(count);
 
         //Id == 0 인 근접무기의 경우, 갯수 증가 시 각도를 다시 맞춰주어야 하기에 함수를 다시 부르기
         if (Id == 0) {
+            print("Batch");
             Batch();
         }
 
@@ -99,7 +104,44 @@ public class Weapon_control : MonoBehaviour
 
 
     //무기의 Id값에 따라 로직이 다름
-    public void Init() {
+    public void Init(Itemdata Item_data) {
+
+        //기본 셋, Hirarchy에 생성할 unit?의 이름 설정
+        name = "Weapon" + Item_data.Item_id;
+
+        //생성 시 Player 를 Parent로 하게 함
+        transform.parent = Player_control.transform;
+        //localPosition으로 Parent인 Player 기준으로 좌표 접근, 영벡터로 설정해
+        //Player의 위치와 같게 함
+        transform.localPosition = Vector3.zero;
+
+        //Itemdata에 저장되어있는 값들로 초기화
+
+        Id = Item_data.Item_id;
+
+        print("Init id");
+
+        Count = Item_data.Base_cnt;
+
+        Weapon_dmg = Item_data.Base_dmg;
+
+        //PoolManager에 접근 시 사용하는 Prefab_idx의 값을 조정하기 위한 코드
+        //근접무기와 원거리 무기 총알 생성을 위해서 Object Pooling을 이용함
+        //PoolManager의 Get() 함수를 사용하기 위해서는, Prefabs_idx값을 넣어주어야 함
+        for (int idx = 0; idx < GameManager.instance.Pool.Prefabs.Length; idx++) {
+
+            //Itemdata에 설정한 Project_tile(Prefab을 넣어둠)과
+            //PoolManager의 Prefabs[idx] 를 비교, 둘이 같다면 Prefabs_idx 초기화
+            if (Item_data.Project_tile == GameManager.instance.Pool.Prefabs[idx]) {
+
+                Prefabs_idx = idx;
+                break;
+            }
+        }
+
+
+
+
 
         switch (Id) {
             
@@ -172,8 +214,9 @@ public class Weapon_control : MonoBehaviour
             // //Player와 거리를 두기 위해, Bullet이 바라보는 윗방향, 
             // //즉 Bullet.up에 Weapon_distance(떨어트릴 거리)를 곱해 Bullet 기준 위로 이동
             // //
-            Bullet.Translate(Bullet.transform.up * Weapon_distance, Space.World);
+            //Bullet.Translate(Bullet.transform.up * Weapon_distance, Space.World);
 
+            Bullet.Translate(Bullet.transform.up * Weapon_distance, Space.World);
 
             // //-1 은 근접 무기용, 관통 수 제한이 없음
             Bullet.GetComponent<Bullet_control>().Init(Weapon_dmg, -1, Vector3.zero);
