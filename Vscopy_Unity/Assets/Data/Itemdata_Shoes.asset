@@ -21,9 +21,9 @@ MonoBehaviour:
   Base_cnt: 0
   Dmgs:
   - 0.1
+  - 0.1
+  - 0.1
   - 0.2
-  - 0.3
-  - 0.4
   - 1
   Cnts: 0000000000000000000000000000000000000000
   Project_tile: {fileID: 0}

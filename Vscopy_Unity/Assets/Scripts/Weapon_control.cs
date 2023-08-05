@@ -89,16 +89,18 @@ public class Weapon_control : MonoBehaviour
         this.Weapon_dmg = Weapon_dmg;
         this.Count += count;
 
-        print(Id);
-        print(count);
+        // print(Id);
+        // print(count);
 
         //Id == 0 인 근접무기의 경우, 갯수 증가 시 각도를 다시 맞춰주어야 하기에 함수를 다시 부르기
         if (Id == 0) {
-            print("Batch");
+            //print("Batch");
             Batch();
         }
 
-
+        //레벨업 시, BroadcastMessage를 통해 Player의 모든 자식에게 Gear_update 함수를 실행하게 함
+        //SemdMessageOptions를 통해, Player이 자식을 가지고 있지 않아도 에러를 안띄우게 함
+        Player_control.BroadcastMessage("Gear_update" ,SendMessageOptions.DontRequireReceiver);
 
     }
 
@@ -119,7 +121,7 @@ public class Weapon_control : MonoBehaviour
 
         Id = Item_data.Item_id;
 
-        print("Init id");
+        //print("Init id");
 
         Count = Item_data.Base_cnt;
 
@@ -140,9 +142,6 @@ public class Weapon_control : MonoBehaviour
         }
 
 
-
-
-
         switch (Id) {
             
             //Id가 0이면(근접무기로 설정함) 무기 이동속도 
@@ -160,8 +159,12 @@ public class Weapon_control : MonoBehaviour
 
 
         }
-    }
 
+         //레벨업 시, BroadcastMessage를 통해 Player의 모든 자식에게 Gear_update 함수를 실행하게 함
+        //SemdMessageOptions를 통해, Player이 자식을 가지고 있지 않아도 에러를 안띄우게 함
+        Player_control.BroadcastMessage("Gear_update", SendMessageOptions.DontRequireReceiver);
+
+    }
 
 
 

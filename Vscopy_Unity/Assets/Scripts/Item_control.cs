@@ -13,7 +13,10 @@ public class Item_control : MonoBehaviour
 
     public int Level;
 
+    //Weapon과 Gear의 생성 및 레벨업을 위해 Script를 가져와 저장할 변수
     public Weapon_control Weapon;
+
+    public Gear_control Gear;
 
     //Image와 Text 변환을 위해 사용할 변수
     Image Icon;
@@ -50,7 +53,34 @@ public class Item_control : MonoBehaviour
         switch (Data.Item_type) {
 
             case Itemdata.Itemtype.Glove:
+            case Itemdata.Itemtype.Shoes:
 
+                //첫 레벨 업 시 기어 생성
+                if (Level == 0) {
+
+                    //새 GameObject 생성 및 AddComponent로 Script 가져오기
+                    //후에도 이 변수를 사용하기 위해 선언
+                    GameObject New_gear = new GameObject();
+
+                    Gear = New_gear.AddComponent<Gear_control>();
+                    
+                    //Init 함수에, Itemdata의 정보를 저장한 변수 Data 넣어주기
+                    Gear.Init(Data);
+
+                }
+
+                else {
+                    
+                    //Itemdata에 저장되어 있는 레벨 별 Dmgs 가져오기(Glove, Shoes에서는 Rate의 용도로 사용)
+                    float Rate = Data.Dmgs[Level];
+
+                    //Gear_control의 Lvl_up 함수에 Rate 넣어서 비율 증가시키기
+                    Gear.Lvl_up(Rate);
+
+                }
+
+                //Lv up
+                Level++;
                 break;
 
             //여러개의 case를 붙여서 사용 가능
@@ -66,15 +96,14 @@ public class Item_control : MonoBehaviour
                     //AddComponent를 통해 특정 Component 가져오고 반환하기
                     Weapon = New_weapon.AddComponent<Weapon_control>();
 
+                    //Init 함수에, Itemdata의 정보를 저장한 변수 Data 넣어주기
                     Weapon.Init(Data);
-
 
                 }
 
                 //레벨 업 시
                 else {
-                    
-                     
+                                      
                     //Itemdata에 저장되어 있는 기본 무기 dmg 가져오기
                     float Weapon_dmg = Data.Base_dmg;
                     int Count = 0;
@@ -91,28 +120,23 @@ public class Item_control : MonoBehaviour
                     //레벨 업에 따른 Weapon 강화를 해주는 함수 
                     Weapon.Lvl_up(Weapon_dmg, Count);
 
-
-
                 }
 
-
-
+                //Lv up
+                Level++;
                 break;
 
             case Itemdata.Itemtype.Heal :
 
-                break;
-
-             
-
-            case Itemdata.Itemtype.Shoes:
+                //GameManager에 저장되어 있는 현재 체력을, 최대 체력으로 변경해서 회복의 효과
+                GameManager.instance.P_Current_hp = GameManager.instance.P_Max_hp;
 
                 break;
+
 
         }
 
-        //Lv up
-        Level++;
+        
 
         //현재 Dmgs 의 배열의 길이는 5다. 이는 최대 레벨을 5로 구상해놓았기 때문
         //최대 레벨을 넘지 않게 조절하는 코드
