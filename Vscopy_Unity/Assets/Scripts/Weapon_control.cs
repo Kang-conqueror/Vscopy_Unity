@@ -46,6 +46,14 @@ public class Weapon_control : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        //GameManager의 Pause(게임의 일시정지 유무)를 확인하고, Pause시 Update문 못들어가게 return
+        if (GameManager.instance.Pause) {
+            return;
+        }
+
+
+
         //Id에 따라 근접, 원거리 무기 구분해서 로직 적용
         switch (Id) {
 
@@ -159,6 +167,19 @@ public class Weapon_control : MonoBehaviour
 
 
         }
+        
+        //열거형 enum의 원소들은, 정수의 idx로도 접근 가능
+        //enum의 첫번째 원소는 0, 두번째는 1... 이런 식으로 저장되어 있음
+        //int를 통해 형변환을 시키면 됨
+        Hand_control Hand = Player_control.Hands[(int)Item_data.Item_type];
+
+
+        //Init함수의 인자로 받은 Item_data의 Hand에 저장되어 있는 Sprite를 넣어주기
+        Hand.Sprite.sprite = Item_data.Hand;
+
+        //object 활성화 시키기
+        Hand.gameObject.SetActive(true);
+
 
          //레벨업 시, BroadcastMessage를 통해 Player의 모든 자식에게 Gear_update 함수를 실행하게 함
         //SemdMessageOptions를 통해, Player이 자식을 가지고 있지 않아도 에러를 안띄우게 함

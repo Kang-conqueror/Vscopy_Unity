@@ -15,7 +15,7 @@ MonoBehaviour:
   Item_type: 4
   Item_id: 4
   Item_name: Heal
-  Item_desc: 
+  Item_desc: "\uC0DD\uBA85\uB825 \uC804\uCCB4 \uD68C\uBCF5"
   Item_icon: {fileID: 927338625, guid: d71a3dc7aa20fad4f9a99fc76a9254ba, type: 3}
   Base_dmg: 0
   Base_cnt: 0
@@ -27,3 +27,4 @@ MonoBehaviour:
   - 0
   Cnts: 0000000000000000000000000000000000000000
   Project_tile: {fileID: 0}
+  Hand: {fileID: 0}

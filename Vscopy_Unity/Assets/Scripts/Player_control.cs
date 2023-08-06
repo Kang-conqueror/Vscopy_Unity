@@ -7,6 +7,8 @@ public class Player_control : MonoBehaviour
     //Scanner_control Script를 받을 변수
     public Scanner_control Scanner_Control;
 
+    //Player의 양 손을 관리하기 위해 사용할 변수
+    public Hand_control[] Hands;
 
 
     //키보드 입력의 벡터를 받을 변수
@@ -32,6 +34,9 @@ public class Player_control : MonoBehaviour
         Ani = GetComponent<Animator>();
         Scanner_Control = GetComponent<Scanner_control>();
 
+        //true를 인자로 주면, Disable 된 object도 접근해서 component 가져옴
+        Hands = GetComponentsInChildren<Hand_control>(true);
+
     }
 
 
@@ -44,6 +49,11 @@ public class Player_control : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //GameManager의 Pause(게임의 일시정지 유무)를 확인하고, Pause시 Update문 못들어가게 return
+        if (GameManager.instance.Pause) {
+            return;
+        }
+
 
         //좌우, 상하 Input값 받아서 벡터에 넣기
         Input_vec.x = Input.GetAxisRaw("Horizontal");
@@ -65,6 +75,11 @@ public class Player_control : MonoBehaviour
 
     //매 프레임 종료 후에 작동되는 LateUpdate
     private void LateUpdate() {
+
+        //GameManager의 Pause(게임의 일시정지 유무)를 확인하고, Pause시 Update문 못들어가게 return
+        if (GameManager.instance.Pause) {
+            return;
+        }
         
         //SetFloat로 벡터의 magnitued, 벡터의 길이 전달해주기
         Ani.SetFloat("Speed", Input_vec.magnitude);

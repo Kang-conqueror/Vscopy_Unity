@@ -15,7 +15,7 @@ MonoBehaviour:
   Item_type: 2
   Item_id: 2
   Item_name: Glove
-  Item_desc: 
+  Item_desc: "\uC5F0\uC0AC \uC18D\uB3C4 {0}% \uC99D\uAC00"
   Item_icon: {fileID: -201829820, guid: d71a3dc7aa20fad4f9a99fc76a9254ba, type: 3}
   Base_dmg: 0
   Base_cnt: 0
@@ -27,3 +27,4 @@ MonoBehaviour:
   - 1
   Cnts: 0000000000000000000000000000000000000000
   Project_tile: {fileID: 0}
+  Hand: {fileID: 0}

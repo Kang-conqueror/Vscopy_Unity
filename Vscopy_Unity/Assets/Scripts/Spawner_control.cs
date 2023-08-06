@@ -33,6 +33,12 @@ public class Spawner_control : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        //GameManager의 Pause(게임의 일시정지 유무)를 확인하고, Pause시 Update문 못들어가게 return
+        if (GameManager.instance.Pause) {
+            return;
+        }
+
         //게속해서 시간을 더해주기, 시간이 지나면 지날수록 소환주기 빨라지게 하게끔
         Timer += Time.deltaTime;
 

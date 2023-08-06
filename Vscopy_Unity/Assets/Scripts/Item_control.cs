@@ -23,6 +23,9 @@ public class Item_control : MonoBehaviour
 
     Text Lvl_text;
 
+    Text Name_text;
+
+    Text Desc_text;
 
     private void Awake() {
         
@@ -34,17 +37,62 @@ public class Item_control : MonoBehaviour
         Icon.sprite = Data.Item_icon;
 
         //GetComponentsInChildren을 통해 Text 정보 가져와서 저장하기
+        //Children 으로 Level_text, Name_text, Desc_text 순서로 존재함
         Text[] Txt = GetComponentsInChildren<Text>();
         Lvl_text = Txt[0];
+        Name_text = Txt[1];
+        Desc_text = Txt[2];
+
+        //Name_text 초기화 하기
+        Name_text.text = Data.Item_name;
 
     }
 
-    private void LateUpdate() {
+    //OnEnable 되었을 때 작동하는 함수
+    private void OnEnable() {
         
         //레벨을 표시하는 txt 계속 초기화
         Lvl_text.text = "Lv." + Level;
 
+
+        //Item_type에 따라 switch문으로 분류
+        switch (Data.Item_type) {
+
+            //Item_desc 에는 Item에 대한 설명이 적힌 문자열이 있음
+            //문자열 중간에 {0}, {1}을 적어놓아서, Format문을 사용 가능
+
+            //이런 방법 대신, TextMeshProUGUI 의 SetText를 활용해도 됨
+            //애초에 Text 대신 TextMeshProUGUI를 사용하면 더 편할듯?
+
+            case Itemdata.Itemtype.Range:
+            case Itemdata.Itemtype.Melee:
+
+                
+                Desc_text.text = string.Format(Data.Item_desc, Data.Dmgs[Level] * 100, Data.Cnts[Level]);
+
+                break;
+
+
+            case Itemdata.Itemtype.Glove:
+            case Itemdata.Itemtype.Shoes:
+
+                Desc_text.text = string.Format(Data.Item_desc, Data.Dmgs[Level] * 100);
+
+                break;
+
+
+            case Itemdata.Itemtype.Heal:
+
+                 Desc_text.text = string.Format(Data.Item_desc);
+
+                break;
+
+
+
+        }
+
     }
+
 
     //버튼 클릭 시 실행시킬 함수
     public void On_click() {

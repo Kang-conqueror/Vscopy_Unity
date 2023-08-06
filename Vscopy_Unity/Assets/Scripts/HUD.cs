@@ -38,7 +38,11 @@ public class HUD : MonoBehaviour
 
                 //현재, 최대 경험치 가져오기
                 float Cur_exp = GameManager.instance.Exp;
-                float Max_exp = GameManager.instance.Next_exp[GameManager.instance.Level];
+
+                //무한 레벨업의 구현을 위해, 최대 경험치를 가져올 때 Mathf.Min 함수 사용
+                //현 Level이 GameManager.instance.Next_exp.Length - 1 을 넘겨도, Min 함수 사용해서
+                //indexoutofrange 방지
+                float Max_exp = GameManager.instance.Next_exp[Mathf.Min(GameManager.instance.Level, GameManager.instance.Next_exp.Length - 1)];
 
                 //Slider의 value를 경험치로 조정해주기
                 My_slider.value = Cur_exp / Max_exp;

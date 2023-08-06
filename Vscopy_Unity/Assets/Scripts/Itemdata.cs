@@ -23,6 +23,8 @@ public class Itemdata : ScriptableObject
 
     public string Item_name;
 
+    //TextArea 선언하면 inspector 창에서 크기 커짐
+    [TextArea]
     public string Item_desc;
 
     public Sprite Item_icon;
@@ -46,6 +48,7 @@ public class Itemdata : ScriptableObject
     //무기에 맞는 Prefab, GameObject를 담을 변수
     public GameObject Project_tile;
 
+    public Sprite Hand;
 
 
 

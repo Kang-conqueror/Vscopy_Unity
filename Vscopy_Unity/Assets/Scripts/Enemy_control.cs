@@ -50,6 +50,13 @@ public class Enemy_control : MonoBehaviour
     //이동을 Fixedupdate로 구현
     private void FixedUpdate() {
 
+
+        //GameManager의 Pause(게임의 일시정지 유무)를 확인하고, Pause시 Update문 못들어가게 return
+        if (GameManager.instance.Pause) {
+            return;
+        }
+
+
         //죽었을 시, return 시켜서 아래 이동 코드를 안따라가게 함
         //Animotor의, GetCurrentAnimatorStateInfo(index)를 통해, 이 unit의
         //Animator의 특정 index번째의 State를 알 수 있다. 
@@ -71,6 +78,12 @@ public class Enemy_control : MonoBehaviour
     }
 
     private void LateUpdate() {
+
+        //GameManager의 Pause(게임의 일시정지 유무)를 확인하고, Pause시 Update문 못들어가게 return
+        if (GameManager.instance.Pause) {
+            return;
+        }
+
         
         //Target의 x좌표가 자신의 x좌표보다 작으면, flipx를 통해 세로선 기준 뒤집기
         Sprite.flipX = Target_rb2.position.x < Rb2.position.x;
@@ -125,6 +138,10 @@ public class Enemy_control : MonoBehaviour
     /// <param name="other">The other Collider2D involved in this collision.</param>
     void OnTriggerEnter2D(Collider2D other)
     {
+
+        
+
+        
         //Enter한 물체의 Tag가 Bullet이 아니면, 혹은 죽어있는 상태면 return
         if (!other.CompareTag("Bullet") || !Live_dead) {
             return;
