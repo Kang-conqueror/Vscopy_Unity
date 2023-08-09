@@ -156,6 +156,8 @@ public class Weapon_control : MonoBehaviour
             case 0:
                 //근접 무기의 경우, Speed는 회전 속도
                 Weapon_speed -= 150;
+
+                //재생성 시 회전체의 각도 조절을 위해 모든 회전체를 재 생성
                 Batch();
 
                 break;
@@ -163,6 +165,9 @@ public class Weapon_control : MonoBehaviour
             default:
                 //원거리 무기의 경우, Speed는 연사 속도
                 Weapon_speed = 0.3f;
+
+                //Character의 특성 반영해주기
+                Weapon_dmg *= Char_Adv.RangeWeaponDmg;
                 break;
 
 

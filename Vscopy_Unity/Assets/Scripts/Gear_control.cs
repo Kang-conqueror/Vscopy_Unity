@@ -85,7 +85,7 @@ public class Gear_control : MonoBehaviour
     public void Speed_up() {
 
         //Player의 이동속도를 일정 Rate만큼 증가
-        GameManager.instance.Player.Player_speed +=   GameManager.instance.Player.Player_speed * Rate;
+        GameManager.instance.Player.Player_speed +=  GameManager.instance.Player.Player_speed * Rate;
 
     }
 

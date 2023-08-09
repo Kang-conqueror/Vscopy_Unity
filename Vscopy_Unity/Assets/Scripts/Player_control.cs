@@ -10,6 +10,9 @@ public class Player_control : MonoBehaviour
     //Player의 양 손을 관리하기 위해 사용할 변수
     public Hand_control[] Hands;
 
+    //선택한 Character의 Animator 받기 위한 배열
+    public RuntimeAnimatorController[] Animcon;
+
 
     //키보드 입력의 벡터를 받을 변수
     public Vector2 Input_vec;
@@ -39,12 +42,18 @@ public class Player_control : MonoBehaviour
 
     }
 
+    //Player 활성화 시 작동
+    private void OnEnable() {
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
+        //속성을 이용해 특정 값을 return받기
+        Player_speed *= Char_Adv.Speed;
+
+        //Player의 Animator을 Animcon 배열에 있는 특정 idx의 것으로 바꾸기
+        Ani.runtimeAnimatorController = Animcon[GameManager.instance.Player_idx];
     }
+
+
+
 
     // Update is called once per frame
     void Update()
@@ -68,9 +77,6 @@ public class Player_control : MonoBehaviour
 
         Rb2.velocity = Input_vec.normalized * Player_speed;
 
-
-
-
     }
 
     //매 프레임 종료 후에 작동되는 LateUpdate
@@ -93,11 +99,45 @@ public class Player_control : MonoBehaviour
 
         }
 
-
-
     }
 
 
+    //Player의 피격 판정
+    private void OnCollisionStay2D(Collision2D other) {
+        
+        //Pause 상태일 시 return
+        if (GameManager.instance.Pause) {
+
+            return;
+
+        }
+
+        //임의로 피격 시 데미지 10 구성
+        GameManager.instance.P_Current_hp -= Time.deltaTime * 10;
+
+        //Player의 Child로 있는 Spawner, left right hand를 비활성화
+        if (GameManager.instance.P_Current_hp <= 0) {
+
+            for (int idx = 1; idx < transform.childCount; idx++) {
+
+                transform.GetChild(idx).gameObject.SetActive(false);
+
+            }
+
+            //Animator의 trigger 설정으로 애니메이션 바꾸기
+            Ani.SetTrigger("Dead");
+
+            //GameOver 함수 실행
+            GameManager.instance.GameOver();
+
+
+
+        }
+
+
+
+
+    }
 
 
 

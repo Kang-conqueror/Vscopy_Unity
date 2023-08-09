@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -22,19 +23,28 @@ public class GameManager : MonoBehaviour
     public int Kills = 0;
     public int Exp = 0;
     public int[] Next_exp = {10, 30, 60, 100, 140, 200, 260};
-    public int P_Current_hp;
-    public int P_Max_hp;
+    public float P_Current_hp;
+    public float P_Max_hp;
 
-    [Header("Game time")]
+    //선택한 Player의 종류 구분을 위한 변수
+    public int Player_idx;
+
+    [Header("Game Object")]
     public float Game_time;
-    public float Max_game_time = 20f;
+    public float Max_game_time = 100f;
 
-    public bool Pause;
+    public bool Pause = true;
+
+    public GameObject EnemyCleaner;
+
+    public Result Result_UI;
 
 
     private void Awake() {
         
         instance = this;
+
+        Time.timeScale = 0;
 
     }
 
@@ -42,15 +52,96 @@ public class GameManager : MonoBehaviour
 
 
     // Start is called before the first frame update
-    void Start()
+    public void GameStart(int idx)
     {
+        //선택한 Player의 idx 받기
+        Player_idx = idx;
+
         //현재 체력을 최대 체력으로 초기화
         P_Current_hp = P_Max_hp;
 
+        //선택한 Player 생성시키기
+        Player.gameObject.SetActive(true);
+
         //LevelUpUI_control의 Select함수 실행, 0을 넣으면 기본 무기 Shovel 장착
-        LevelUpUI.Select(0);
+        LevelUpUI.Select(Player_idx % 2);
+
+        //Game 시작을 위해 timescale 변경하는 Resume_game 함수 실행
+        Resume_game();
 
     }
+
+    //GameOver을 담당하는 함수
+    public void GameOver() {
+
+        StartCoroutine(GameOverRoutine());
+
+    }
+
+    //Game을 중지시키고, Result_UI를 화면에 띄우는 IEnumerator
+    IEnumerator GameOverRoutine() {
+
+        //일시정지 변수 활성화
+        Pause = true;
+
+        yield return new WaitForSeconds(0.5f);
+
+
+        //Reuslt_UI 활성화 및 이미지 띄우기
+        Result_UI.gameObject.SetActive(true);
+
+        Result_UI.Lose();
+
+        Stop_game();
+
+    }
+
+    //GameWin, 생존에 성공했을 경우를 담당하는 함수
+    public void GameWin() {
+
+        StartCoroutine(GameWinRoutine());
+
+    }
+
+    //Game을 중지시키고, Result_UI를 화면에 띄우는 IEnumerator
+    IEnumerator GameWinRoutine() {
+
+        //일시정지 변수 활성화
+        Pause = true;
+
+        //모든 Enemy를 사망 처리시키는 큰 총알인 EnemyCleaner 활성화
+        EnemyCleaner.SetActive(true);
+
+        yield return new WaitForSeconds(0.5f);
+
+        //모든 Enemy를 사망 처리시키는 큰 총알인 EnemyCleaner 활성화
+        EnemyCleaner.SetActive(false);
+
+
+        //Reuslt_UI 활성화 및 이미지 띄우기
+        Result_UI.gameObject.SetActive(true);
+
+        Result_UI.Win();
+
+        Stop_game();
+
+    }
+
+
+
+
+    //Restart 를 담당하는 함수
+    public void Restart(){
+
+        
+        SceneManager.LoadScene(0);
+
+         
+
+    }
+
+
+
 
     // Update is called once per frame
     void Update()
@@ -62,7 +153,12 @@ public class GameManager : MonoBehaviour
 
         Game_time += Time.deltaTime;
 
+        //Max_game_time 까지 버티면,
         if (Game_time > Max_game_time) {
+
+            //Win 화면 띄우기
+            Game_time = Max_game_time;
+            GameWin();
 
         }
 
@@ -70,6 +166,12 @@ public class GameManager : MonoBehaviour
 
     //경험치 획득을 관리하는 함수
     public void Get_exp() {
+
+        //Pause 시에는, 경험치 획득을 방지함
+        if (Pause) {
+            return;
+        }
+
 
 
         Exp += 1;
